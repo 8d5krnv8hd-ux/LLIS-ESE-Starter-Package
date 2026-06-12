@@ -1190,52 +1190,46 @@ footer a {
 }
 
 
-/* ════ PHOTO PULL — compact inline figure ════════════════════
-   Floats right inside a text section. Not full-width.
-   Caption sits below, small and quiet.                       */
-.photo-pull {
-  margin: var(--xl) 0 var(--xl) var(--2xl);
-  float: right;
-  width: clamp(260px, 40%, 420px);
+
+
+/* ════ PHOTO SECTION BREAK — full-width, no float ══════════
+   Sits cleanly between content blocks. No layout side-effects.
+   Appears at end of #who section as visual transition.       */
+.photo-section-break {
+  margin: var(--2xl) 0 0;
   border-radius: var(--r-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  shape-outside: margin-box;
-  clear: right;
+  position: relative;
 }
 
-.photo-pull img {
+.photo-section-break img {
   width: 100%;
-  aspect-ratio: 4/3;
+  height: 300px;
   object-fit: cover;
   object-position: center 25%;
   display: block;
-  filter: saturate(0.82) brightness(0.90) contrast(1.04);
+  filter: saturate(0.82) brightness(0.88) contrast(1.04);
   transition:
-    transform  500ms var(--ease-out),
-    filter     300ms var(--ease-out);
+    transform  600ms var(--ease-out),
+    filter     350ms var(--ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .photo-pull:hover img {
-    transform: scale(1.04);
-    filter: saturate(0.94) brightness(0.95) contrast(1.03);
+  .photo-section-break:hover img {
+    transform: scale(1.03);
+    filter: saturate(0.93) brightness(0.93) contrast(1.03);
   }
 }
 
-.photo-pull figcaption {
-  background: var(--midnight);
-  padding: var(--sm) var(--md);
-  font-size: 0.72rem;
+.photo-section-break figcaption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(30,58,95,0.82), transparent);
+  padding: var(--xl) var(--lg) var(--md);
+  font-size: 0.78rem;
   font-style: italic;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.5;
-}
-
-@media (max-width: 720px) {
-  .photo-pull {
-    float: none;
-    width: 100%;
-    margin: var(--lg) 0;
-  }
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.01em;
 }
