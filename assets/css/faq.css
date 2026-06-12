@@ -578,3 +578,424 @@ footer a{
   .hero-inner{padding:var(--2xl) var(--md) var(--xl);}
   .faq-a-body{padding-left:var(--lg);}
 }
+
+
+
+/* ════════════════════════════════════════════════════════════
+   LLIS Photo System — Editorial / JumpSeat-inspired
+   Philosophy:
+   • Photos float freely in the layout, not boxed in cards
+   • Asymmetric cropping, intentional overflow
+   • LLIS brand filter: midnight-cool, desaturated warmth
+   • Text lives on photos, not below them
+   • Scale contrast: one large + one small creates hierarchy
+   • Emil: hover is scale on img only, not container
+════════════════════════════════════════════════════════════ */
+
+/* ── Base filter — all photos get this ──────────────────────
+   Matches the Midnight/Fern palette without killing vibrancy  */
+.llis-photo {
+  --photo-filter: saturate(0.80) brightness(0.88) contrast(1.05);
+  --photo-filter-hover: saturate(0.95) brightness(0.94) contrast(1.04);
+}
+
+/* ════ 1. CINEMATIC HERO SPLIT ══════════════════════════════
+   Full-width asymmetric photo + text side-by-side
+   Photo bleeds to right edge, text floats left.
+   Inspired by JumpSeat hero: image right, headline left.     */
+.photo-hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 460px;
+  margin: var(--3xl) 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+
+.photo-hero-split__text {
+  background: var(--midnight);
+  padding: var(--3xl) var(--2xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Diagonal cut from text to photo */
+.photo-hero-split__text::after {
+  content: '';
+  position: absolute;
+  right: -28px; top: 0; bottom: 0;
+  width: 56px;
+  background: var(--midnight);
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  z-index: 2;
+}
+
+.photo-hero-split__label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fern);
+  margin-bottom: var(--md);
+}
+
+.photo-hero-split__headline {
+  font-weight: 800;
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  color: var(--white);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--lg);
+}
+
+.photo-hero-split__headline em {
+  font-style: italic;
+  color: var(--sage);
+}
+
+.photo-hero-split__body {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  max-width: 340px;
+}
+
+.photo-hero-split__img {
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-hero-split__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: var(--photo-filter);
+  transition:
+    transform  700ms var(--ease-out),
+    filter     400ms var(--ease-out);
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .photo-hero-split:hover .photo-hero-split__img img {
+    transform: scale(1.04);
+    filter: var(--photo-filter-hover);
+  }
+}
+
+/* ════ 2. MAGAZINE FLOAT ROW ════════════════════════════════
+   Two photos at different scales, one overlapping the other.
+   No borders, no cards. Photos breathe.                      */
+.photo-float-row {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 0;
+  margin: var(--2xl) 0;
+  align-items: end;
+  position: relative;
+}
+
+.photo-float-row__main {
+  position: relative;
+  border-radius: var(--r-lg) 0 0 var(--r-lg);
+  overflow: hidden;
+  aspect-ratio: 16/9;
+  z-index: 1;
+}
+
+.photo-float-row__main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: var(--photo-filter);
+  transition:
+    transform  600ms var(--ease-out),
+    filter     350ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .photo-float-row__main:hover img {
+    transform: scale(1.04);
+    filter: var(--photo-filter-hover);
+  }
+}
+
+.photo-float-row__secondary {
+  position: relative;
+  margin-left: -var(--md);
+  border-radius: 0 var(--r-lg) var(--r-lg) 0;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  z-index: 2;
+  box-shadow: -8px 0 32px rgba(30,58,95,.25);
+}
+
+.photo-float-row__secondary img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: var(--photo-filter);
+  transition:
+    transform  600ms var(--ease-out),
+    filter     350ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .photo-float-row__secondary:hover img {
+    transform: scale(1.05);
+    filter: var(--photo-filter-hover);
+  }
+}
+
+/* Caption overlay — lives on the main photo, bottom-left */
+.photo-float-row__caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: var(--2xl) var(--xl) var(--lg);
+  background: linear-gradient(to top,
+    rgba(30,58,95,0.88) 0%,
+    rgba(30,58,95,0.4) 60%,
+    transparent 100%);
+  pointer-events: none;
+}
+
+.photo-float-row__caption-label {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 0.3rem;
+}
+
+.photo-float-row__caption-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.4;
+}
+
+/* ════ 3. FULL-BLEED BREAK ══════════════════════════════════
+   Edge-to-edge photo with text overlay.
+   No border-radius — true bleed to section edges.
+   Uses clip-path to create angled top/bottom edges.          */
+.photo-bleed {
+  position: relative;
+  margin: var(--3xl) calc(-2.5rem);  /* break out of .page padding */
+  overflow: hidden;
+  height: 400px;
+}
+
+.photo-bleed img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+  filter: saturate(0.72) brightness(0.70) contrast(1.08);
+  transition: transform 800ms var(--ease-out);
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .photo-bleed:hover img { transform: scale(1.03); }
+}
+
+/* Diagonal clip on top and bottom */
+.photo-bleed::before,
+.photo-bleed::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+.photo-bleed::before {
+  top: 0;
+  background: var(--white);
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%);
+}
+.photo-bleed::after {
+  bottom: 0;
+  background: var(--white);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%, 0 100%);
+}
+
+.photo-bleed__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: var(--3xl) var(--2xl);
+  background: linear-gradient(
+    105deg,
+    rgba(30,58,95,0.82) 0%,
+    rgba(30,58,95,0.35) 55%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.photo-bleed__inner { max-width: 460px; }
+
+.photo-bleed__eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: var(--sm);
+}
+
+.photo-bleed__headline {
+  font-weight: 800;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--md);
+}
+
+.photo-bleed__sub {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.65;
+}
+
+/* ════ 4. STAGGERED TRIO — FAQ page ═════════════════════════
+   Three photos at different sizes, staggered vertically.
+   The "real fans upgrade" section from JumpSeat.             */
+.photo-trio {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.9fr;
+  gap: var(--md);
+  margin: var(--2xl) 0;
+  align-items: start;
+}
+
+.photo-trio__item {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+/* Stagger: push items down progressively */
+.photo-trio__item:nth-child(1) { margin-top: 0; }
+.photo-trio__item:nth-child(2) { margin-top: var(--xl); }
+.photo-trio__item:nth-child(3) { margin-top: var(--lg); }
+
+.photo-trio__item img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  display: block;
+  filter: var(--photo-filter);
+  transition:
+    transform  500ms var(--ease-out),
+    filter     300ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .photo-trio__item:hover img {
+    transform: scale(1.05);
+    filter: var(--photo-filter-hover);
+  }
+}
+
+.photo-trio__label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: var(--xl) var(--md) var(--sm);
+  background: linear-gradient(to top, rgba(30,58,95,0.85), transparent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+
+/* ════ 5. SIDE-BY-SIDE EQUAL ════════════════════════════════
+   Two equal photos, full height, separated by a thin gap.   */
+.photo-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sm);
+  margin: var(--2xl) 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.photo-duo__item {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+}
+
+.photo-duo__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: var(--photo-filter);
+  transition:
+    transform  550ms var(--ease-out),
+    filter     300ms var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .photo-duo__item:hover img {
+    transform: scale(1.05);
+    filter: var(--photo-filter-hover);
+  }
+}
+
+.photo-duo__caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: var(--2xl) var(--md) var(--sm);
+  background: linear-gradient(to top, rgba(30,58,95,.82), transparent);
+}
+
+.photo-duo__caption-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sage);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.photo-duo__caption-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,.9);
+}
+
+/* ════ RESPONSIVE ════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  .photo-hero-split { grid-template-columns: 1fr; min-height: auto; }
+  .photo-hero-split__text::after { display: none; }
+  .photo-hero-split__img { aspect-ratio: 16/9; height: 220px; }
+  .photo-float-row { grid-template-columns: 1fr; }
+  .photo-float-row__secondary { display: none; }
+  .photo-float-row__main { border-radius: var(--r-lg); aspect-ratio: 4/3; }
+  .photo-bleed { margin: var(--2xl) calc(-1.2rem); height: 280px; }
+  .photo-bleed::before, .photo-bleed::after { height: 36px; }
+  .photo-trio { grid-template-columns: 1fr 1fr; }
+  .photo-trio__item:nth-child(3) { display: none; }
+  .photo-duo { grid-template-columns: 1fr; }
+  .photo-duo__item:nth-child(2) { display: none; }
+}
